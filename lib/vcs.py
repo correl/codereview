@@ -37,8 +37,8 @@ class Diff(object):
         diff = difflib.unified_diff(
                 a,
                 b,
-                fromfile=self.a.path,
-                tofile=self.b.path,
+                fromfile=self.a.path if self.a else '/dev/null',
+                tofile=self.b.path if self.b else '/dev/null',
                 n=context,
                 lineterm='')
         return "\n".join(diff)
