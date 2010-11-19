@@ -1,17 +1,18 @@
 from django.http import Http404
 from django.shortcuts import render_to_response
 from codereview.dashboard.models import Repository
+from codereview.browser import vcs
 
 def log(request,repository):
     try:
-        repo = Repository.objects.get(name=repository)
+        repository = Repository.objects.get(name=repository)
     except:
         raise Http404
-    vcs = repo.get_vcs()
-    ref = request.GET['c'] if 'c' in request.GET else vcs.ref()
+    repo = vcs.create(repository.type, repository.path)
+    ref = request.GET['c'] if 'c' in request.GET else repo.ref()
     offset = int(request.GET['o']) if 'o' in request.GET else 0
     limit = 20
-    log = vcs.log(ref, max=limit, offset=offset)
+    log = repo.log(ref, max=limit, offset=offset)
 
     newer = offset - limit if offset > limit else 0
     # Inspect the last commit. If it has no parents, we can't go any further
@@ -22,7 +23,7 @@ def log(request,repository):
     return render_to_response('browser/log.html',
             {
                 'repository': repository,
-                'vcs': vcs,
+                'repo': repo,
                 'log': log,
                 'ref': ref,
                 'offset': offset,
@@ -31,17 +32,17 @@ def log(request,repository):
             })
 def view(request, repository, ref):
     try:
-        repo = Repository.objects.get(name=repository)
+        repository = Repository.objects.get(name=repository)
     except:
         raise Http404
-    vcs = repo.get_vcs()
-    commit = vcs.commit(ref)
-    diffs = vcs.diff(ref)
+    repo = vcs.create(repository.type, repository.path)
+    commit = repo.commit(ref)
+    diffs = repo.diff(ref)
 
     return render_to_response('browser/view.html',
             {
                 'repository': repository,
-                'vcs': vcs,
+                'repo': repo,
                 'ref': ref,
                 'commit': commit,
                 'diffs': diffs,

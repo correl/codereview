@@ -15,6 +15,14 @@ class VCS(object):
     def log(self, commit=None, path=None, max=50, offset=0):
         return []
 
+def create(type, path):
+    cls = {
+            0: Git,
+    }.get(type, None)
+    if not cls:
+        raise Exception('Unknown VCS Type')
+    return cls(path)
+
 class Blob(object):
     def __init__(self, path, data):
         self.path = path
@@ -98,6 +106,7 @@ class Commit(object):
 
 import git
 class Git(VCS):
+    type = 'Git'
     def __init__(self, path):
         super(Git, self).__init__(path);
         self._repo = git.Repo(self._path)
