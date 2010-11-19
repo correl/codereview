@@ -83,18 +83,6 @@ class Diff(object):
             changes.append(change)
         return changes
 
-    def html(self):
-        a = self.a.data.split('\n') if self.a.data else []
-        b = self.b.data.split('\n') if self.b.data else []
-        h = difflib.HtmlDiff()
-        diff = h.make_table(
-                a,
-                b,
-                fromdesc=self.a.path,
-                todesc=self.b.path,
-                context=True)
-        return diff
-
 class Commit(object):
     def __init__(self):
         self.id = None
