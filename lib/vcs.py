@@ -1,3 +1,4 @@
+import re
 import difflib
 from datetime import datetime
 
@@ -30,39 +31,48 @@ class Diff(object):
         self.a = None
         self.b = None
         self.type = 0
-    def unified(self):
+    def unified(self, context=3):
         a = self.a.data.split('\n') if self.a else []
         b = self.b.data.split('\n') if self.b else []
         diff = difflib.unified_diff(
                 a,
                 b,
                 fromfile=self.a.path,
-                tofile=self.b.path)
-        return '\n'.join(diff)
+                tofile=self.b.path,
+                n=context,
+                lineterm='')
+        return "\n".join(diff)
     def changes(self, context=3):
-        a = self.a.data.split('\n') if self.a else []
-        b = self.b.data.split('\n') if self.b else []
-        differ = difflib.Differ()
-
-        # Locate changes so we can mark context lines
-        i = 0
+        "Parses the unified diff into a data structure for easy display"
         changes = []
-        for change in differ.compare(a, b):
-            if change[0] in ['+', '-']:
-                changes.append(i)
-            i += 1
-
-        i = 0
         line_a = 0
         line_b = 0
-        for change in differ.compare(a, b):
-            type = change[:2].strip()
-            text = change[2:]
-            if type == '?':
-                # Change information. Discard it for now.
-                i += 1
-                print 'skip ?'
+        if context == None:
+            context = max(
+                    len(self.a.data.split('\n')) if self.a else 0,
+                    len(self.b.data.split('\n')) if self.b else 0)
+        for line in self.unified(context).split('\n')[2:]:
+            if line.startswith('@@'):
+                pattern = r'\-(\d+)(,\d+)? \+(\d+)(,\d+)?'
+                info = re.findall(pattern, line)
+                line_a = int(info[0][0])
+                line_b = int(info[0][2])
+                change = {
+                        'type': '@',
+                        'text': line,
+                        'line_a': line_a,
+                        'line_b': line_b,
+                        }
+                changes.append(change)
                 continue
+            type = line[0]
+            text = line[1:]
+            change = {
+                    'type': type,
+                    'text': text,
+                    'line_a': line_a,
+                    'line_b': line_b,
+                    }
             if type == '+':
                 line_b += 1
             elif type == '-':
@@ -70,21 +80,9 @@ class Diff(object):
             else:
                 line_a += 1
                 line_b += 1
-            if context and not type:
-                # Check to see if we're in range of a change
-                nearby = [c for c in changes if abs(i - c) <= context + 1]
-                if not nearby:
-                    i += 1
-                    print 'skip nc'
-                    continue
-            result = {
-                    'type': type,
-                    'line_a': line_a,
-                    'line_b': line_b,
-                    'text': text,
-                    }
-            yield result
-            i += 1
+            changes.append(change)
+        return changes
+
     def html(self):
         a = self.a.data.split('\n') if self.a.data else []
         b = self.b.data.split('\n') if self.b.data else []

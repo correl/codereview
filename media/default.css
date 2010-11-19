@@ -49,6 +49,10 @@ table.diff {
 table.diff td {
     padding-left: .3em;
     padding-right: .3em;
+    white-space: nowrap;
+}
+table.diff .break {
+    background-color: #babaee;
 }
 table.diff .number {
     width: 3em;
