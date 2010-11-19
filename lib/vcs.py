@@ -164,7 +164,10 @@ class Git(VCS):
         result = []
         b = self._repo.commit(b)
         if not a:
-            a = b.parents
+            # FIXME:
+            # Only using the first parent for now. Some merge commits seem to be
+            # causing nasty problems, while others diff just fine.
+            a = b.parents[:1]
         else:
             a = self._repo.commit(a)
         for diff in b.diff(a):
