@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf8">
+        <link rel="stylesheet" href="/media/default.css" />
+        <title>{% block title %}CodeReview{% endblock %}</title>
+    </head>
+    <body>
+        <div id="container">
+            <div class="header">
+                <h1><a href="{% url codereview.dashboard.views.index %}">CodeReview</a></title>
+            </div>
+            <div class="navigation">
+            </div>
+            <div class="content">
+                {% block content %}
+                    This space intentionally left blank.
+                {% endblock %}
+            </div>
+        </div>
+    </body>
+</html>

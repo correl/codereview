@@ -1,0 +1,20 @@
+[
+    {
+        "pk": 1, 
+        "model": "dashboard.repository", 
+        "fields": {
+            "path": "/home/correlr/code/voiceaxis", 
+            "type": 0, 
+            "name": "VoiceAxis"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "dashboard.repository", 
+        "fields": {
+            "path": "/srv/git/mtg.git", 
+            "type": 0, 
+            "name": "MTG"
+        }
+    }
+]
