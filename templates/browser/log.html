@@ -1,7 +1,11 @@
 {% extends "layouts/default.html" %}
 {% load gravatar %}
-
 {% load vcs %}
+
+{% block navigation %}
+{% include "browser/navigation.html" %}
+{% endblock %}
+
 {% block content %}
 <h2>Commit Log</h2>
 Branches:

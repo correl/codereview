@@ -5,6 +5,15 @@ body, th, td {
 a {
     color: black;
 }
+div.navigation {
+    width: 200px;
+    float: left;
+    background-color: #ddd;
+}
+div.content {
+    margin-left: 200px;
+    background-color: #eee;
+}
 span.marker {
     display: block;
     float: left;

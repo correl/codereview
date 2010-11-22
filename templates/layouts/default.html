@@ -11,6 +11,8 @@
                 <h1><a href="{% url codereview.dashboard.views.index %}">CodeReview</a></title>
             </div>
             <div class="navigation">
+                {% block navigation %}
+                {% endblock %}
             </div>
             <div class="content">
                 {% block content %}
