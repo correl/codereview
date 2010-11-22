@@ -166,7 +166,12 @@ class Git(VCS):
             a = b.parents[:1]
         else:
             a = self._repo.commit(a)
-        for diff in b.diff(a):
+        if a:
+            diffs = b.diff(a)
+        else:
+            # No parents, use the default behaviour (safe for bare repos)
+            diffs = b.diff()
+        for diff in diffs:
             # b and a are swapped so the parent diff will work as a list of
             # parents. Therefore, we'll swap them back when we put them into our
             # Diff object.
