@@ -1,5 +1,18 @@
 {% load vcs %}
 <h2><a href="{% url codereview.browser.views.log repository=repository.name %}?c={{ ref }}">{{ repository.name }}</a></h2>
+<h3>Branches</h3>
+<ul>
+    {% for branch, commit in repo.branches.items %}
+    <li>
+        {% if ref == branch or ref == commit.id %}
+            <strong>{{ branch }}</strong>
+        {% else %}
+            <a href="{% url codereview.browser.views.log repository=repository.name %}?c={{branch}}">{{ branch }}</a>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+<h3>Browse</h3>
 {% if path|dirname %}
     <strong>{{ path|dirname }}/</strong><br />
     <a href="{% url codereview.browser.views.log repository=repository.name path=path|dirname %}?c={{ ref }}">Up one</a>

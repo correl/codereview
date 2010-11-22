@@ -8,12 +8,6 @@
 
 {% block content %}
 <h2>Commit Log</h2>
-Branches:
-<ul>
-{% for branch, commit in repo.branches.items %}
-<li><a href="{% url codereview.browser.views.log repository=repository.name %}?c={{branch}}">{{ branch }}</a> ({{commit.id}})</li>
-{% endfor %}
-</ul>
 <table class="vcs-log">
     <tr>
         <th>Commit Date</th>
