@@ -144,7 +144,7 @@ class Git(VCS):
     def log(self, commit=None, path=None, max=50, offset=0):
         commit = commit if commit else self._ref
         result = []
-        for c in self._repo.iter_commits(commit, path, max_count=max,
+        for c in self._repo.iter_commits(rev=commit, paths=path, max_count=max,
                 skip=offset):
             result.append(self.commit(c))
         return result
