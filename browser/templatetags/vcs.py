@@ -13,7 +13,7 @@ def oneline(value):
 @register.filter
 @stringfilter
 def lines(value):
-    return value.split('\n')
+    return value.split('\n')[:-1]
 
 @register.filter
 @stringfilter
