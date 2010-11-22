@@ -1,0 +1,9 @@
+<h2><a href="{% url codereview.browser.views.log repository=repository.name %}">{{ repository.name }}</a></h2>
+<ul class="tree">
+    {% for dir in navigation.dirs %}
+        <li class="dir">{{ dir }}</li>
+    {% endfor %}
+    {% for file in navigation.files %}
+        <li class="file">{{ file }}</li>
+    {% endfor %}
+</ul>
