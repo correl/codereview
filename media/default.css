@@ -8,12 +8,10 @@ a {
 div.navigation {
     width: 300px;
     float: left;
-    background-color: #ddd;
     overflow: hidden;
 }
 div.content {
     margin-left: 300px;
-    background-color: #eee;
 }
 ul.tree li.dir {
     list-style-type: circle;

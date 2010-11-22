@@ -16,5 +16,14 @@
             "type": 0, 
             "name": "MTG"
         }
+    },
+    {
+        "pk": 3, 
+        "model": "dashboard.repository", 
+        "fields": {
+            "path": "/srv/git/codereview.git", 
+            "type": 0, 
+            "name": "CodeReview"
+        }
     }
 ]
