@@ -2,6 +2,10 @@
 {% load gravatar %}
 {% load vcs %}
 
+{% block navigation %}
+{% include "browser/navigation.html" %}
+{% endblock %}
+
 {% block content %}
 <h2>{{ commit.message|oneline }}</h2>
 

@@ -5,6 +5,20 @@ body, th, td {
 a {
     color: black;
 }
+div.navigation {
+    width: 300px;
+    float: left;
+    overflow: hidden;
+}
+div.content {
+    margin-left: 300px;
+}
+ul.tree li.dir {
+    list-style-type: circle;
+}
+ul.tree li.file {
+    list-style-type: square;
+}
 span.marker {
     display: block;
     float: left;

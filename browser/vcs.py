@@ -144,7 +144,7 @@ class Git(VCS):
     def log(self, commit=None, path=None, max=50, offset=0):
         commit = commit if commit else self._ref
         result = []
-        for c in self._repo.iter_commits(commit, path, max_count=max,
+        for c in self._repo.iter_commits(rev=commit, paths=path, max_count=max,
                 skip=offset):
             result.append(self.commit(c))
         return result
@@ -176,6 +176,26 @@ class Git(VCS):
                     diff.b_blob.data_stream.read())
             result.append(d)
         return result
+    def browse(self, commit=None, path=''):
+        if not commit:
+            commit = self.ref()
+        files = []
+        dirs = []
 
+        # Locate the tree matching the requested path
+        tree = self._repo.commit(commit).tree
+        if path:
+            for i in tree.traverse():
+                if type(i) == git.objects.Tree and i.path == path:
+                    tree = i
+        if path != tree.path:
+            raise Exception('Path not found')
+
+        for node in tree:
+            if type(node) == git.objects.Blob:
+                files.append(node.path)
+            elif type(node) == git.objects.Tree:
+                dirs.append(node.path)
+        return dirs, files
 if __name__ == '__main__':
     g = Git('/home/correlr/code/voiceaxis')

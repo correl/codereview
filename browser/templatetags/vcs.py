@@ -1,3 +1,4 @@
+import os
 from django.template import Library
 from django.template.defaultfilters import stringfilter
 
@@ -8,3 +9,13 @@ register = Library()
 def oneline(value):
     line = value.split('\n')[0].strip()
     return line
+
+@register.filter
+@stringfilter
+def dirname(value):
+    return os.path.dirname(value)
+
+@register.filter
+@stringfilter
+def basename(value):
+    return os.path.basename(value)
