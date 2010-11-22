@@ -14,9 +14,9 @@ def log(request,repository, path=None):
     offset = int(request.GET['o']) if 'o' in request.GET else 0
     limit = 20
 
-    path = os.path.dirname(path) if path else ''
+    path = path if path else ''
     log = repo.log(ref, path=path, max=limit, offset=offset)
-    navigation = dict(zip(('dirs', 'files'), repo.browse()))
+    navigation = dict(zip(('dirs', 'files'), repo.browse(ref, os.path.dirname(path))))
 
     newer = offset - limit if offset > limit else 0
     # Inspect the last commit. If it has no parents, we can't go any further

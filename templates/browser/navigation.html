@@ -1,9 +1,22 @@
+{% load vcs %}
 <h2><a href="{% url codereview.browser.views.log repository=repository.name %}">{{ repository.name }}</a></h2>
+{% if path|dirname %}
+    <strong>{{ path|dirname }}/</strong><br />
+    <a href="{% url codereview.browser.views.log repository=repository.name path=path|dirname %}">Up one</a>
+{% endif %}
 <ul class="tree">
     {% for dir in navigation.dirs %}
-        <li class="dir">{{ dir }}</li>
+    <li class="dir">
+        <a href="{% url codereview.browser.views.log repository=repository.name path=dir %}/">{{ dir|basename }}</a>
+    </li>
     {% endfor %}
     {% for file in navigation.files %}
-        <li class="file">{{ file }}</li>
+    <li class="file">
+        {% if file == path %}
+            <strong>{{ file|basename }}</strong>
+        {% else %}
+            <a href="{% url codereview.browser.views.log repository=repository.name path=file %}">{{ file|basename }}</a>
+        {% endif %}
+    </li>
     {% endfor %}
 </ul>

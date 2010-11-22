@@ -6,13 +6,20 @@ a {
     color: black;
 }
 div.navigation {
-    width: 200px;
+    width: 300px;
     float: left;
     background-color: #ddd;
+    overflow: hidden;
 }
 div.content {
-    margin-left: 200px;
+    margin-left: 300px;
     background-color: #eee;
+}
+ul.tree li.dir {
+    list-style-type: circle;
+}
+ul.tree li.file {
+    list-style-type: square;
 }
 span.marker {
     display: block;
