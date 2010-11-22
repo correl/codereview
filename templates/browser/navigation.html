@@ -1,5 +1,5 @@
 {% load vcs %}
-<h2><a href="{% url codereview.browser.views.log repository=repository.name %}?c={{ ref }}">{{ repository.name }}</a></h2>
+<h2><a href="{% url codereview.browser.views.log repository=repository %}?c={{ ref }}">{{ repository }}</a></h2>
 <h3>Branches</h3>
 <ul>
     {% for branch, commit in repo.branches.items %}
@@ -7,20 +7,20 @@
         {% if ref == branch or ref == commit.id %}
             <strong>{{ branch }}</strong>
         {% else %}
-            <a href="{% url codereview.browser.views.log repository=repository.name %}?c={{branch}}">{{ branch }}</a>
+            <a href="{% url codereview.browser.views.log repository=repository %}?c={{branch}}">{{ branch }}</a>
         {% endif %}
     </li>
     {% endfor %}
 </ul>
 <h3>Browse</h3>
-{% if path|dirname %}
-    <strong>{{ path|dirname }}/</strong><br />
-    <a href="{% url codereview.browser.views.log repository=repository.name path=path|dirname %}?c={{ ref }}">Up one</a>
+{% if path %}
+    <strong>{{ path }}</strong><br />
+    <a href="{% url codereview.browser.views.log repository=repository path=path|dirname %}?c={{ ref }}">Up one</a>
 {% endif %}
 <ul class="tree">
     {% for dir in navigation.dirs %}
     <li class="dir">
-        <a href="{% url codereview.browser.views.log repository=repository.name path=dir %}/?c={{ ref }}">{{ dir|basename }}</a>
+        <a href="{% url codereview.browser.views.log repository=repository path=dir %}?c={{ ref }}">{{ dir|basename }}</a>
     </li>
     {% endfor %}
     {% for file in navigation.files %}
@@ -28,7 +28,7 @@
         {% if file == path %}
             <strong>{{ file|basename }}</strong>
         {% else %}
-            <a href="{% url codereview.browser.views.log repository=repository.name path=file %}?c={{ ref }}">{{ file|basename }}</a>
+            <a href="{% url codereview.browser.views.blob repository=repository path=file %}?c={{ ref }}">{{ file|basename }}</a>
         {% endif %}
     </li>
     {% endfor %}

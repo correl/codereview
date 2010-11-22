@@ -1,51 +1,9 @@
 {% extends "layouts/default.html" %}
-{% load gravatar %}
-{% load vcs %}
 
 {% block navigation %}
 {% include "browser/navigation.html" %}
 {% endblock %}
 
 {% block content %}
-<h2>Commit Log</h2>
-<table class="vcs-log">
-    <tr>
-        <th>Commit Date</th>
-        <th>Author</th>
-        <th>Commit Message</th>
-    </tr>
-{% for commit in log %}
-    <tr>
-        <td class="date">{{ commit.authored_date }}</td>
-        <td class="author">
-            <img src="{{ commit.author_email|gravatar:16 }}" />
-            {{ commit.author }}
-        </td>
-        <td class="message">
-            {% for branch, c in repo.branches.items %}
-                {% if commit.id == c.id %}
-                    <span class="marker branch"><a href="{% url codereview.browser.views.log repository=repository.name %}?c={{ branch }}">{{ branch }}</a></span>
-                {% endif %}
-            {% endfor %}
-            {% for tag, c in repo.tags.items %}
-                {% if commit.id == c.id %}
-                    <span class="marker tag"><a href="{% url codereview.browser.views.log repository=repository.name %}?c={{ tag }}">{{ tag }}</a></span>
-                {% endif %}
-            {% endfor %}
-            <a href="{% url codereview.browser.views.view repository=repository.name ref=commit.id %}">{{ commit.message|oneline }}</a>
-        </td>
-    </tr>
-{% endfor %}
-</table>
-<div class="vcs-nav">
-    {% if older %}
-        <a href="{% url codereview.browser.views.log repository=repository.name %}?c={{ ref }}&o={{ older }}">Older</a>
-    {% endif %}
-    {% if offset and older %}
-        &middot;
-    {% endif %}
-    {% if offset %}
-        <a href="{% url codereview.browser.views.log repository=repository.name %}?c={{ ref }}&o={{ newer }}">Newer</a>
-    {% endif %}
-</div>
+{% include "browser/commitlog.html" %}
 {% endblock %}

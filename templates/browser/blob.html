@@ -1,0 +1,30 @@
+{% extends "layouts/default.html" %}
+{% load vcs %}
+
+{% block navigation %}
+{% include "browser/navigation.html" %}
+{% endblock %}
+
+{% block content %}
+<h2>File Contents</h2>
+{% with log|first as commit %}
+<h3>
+    {{ blob.path|basename }}
+    @
+    <a href="{% url codereview.browser.views.view repository=repository ref=commit.id %}">{{ commit.id }}</a>
+</h3>
+{% endwith %}
+{% if blob.data %}
+    <table class="diff">
+        {% for line in blob.data|lines %}
+            <tr>
+                <td class="number">{{ forloop.counter }}</td>
+                <td class="text">{{ line }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <em>File is empty</em>
+{% endif %}
+{% include "browser/commitlog.html" %}
+{% endblock %}

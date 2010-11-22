@@ -63,13 +63,18 @@ table.diff {
 table.diff td {
     padding-left: .3em;
     padding-right: .3em;
-    white-space: nowrap;
+    white-space: pre;
 }
 table.diff .break {
     background-color: #babaee;
 }
 table.diff .number {
     width: 3em;
+    text-align: right;
+	background-color: #f0f0f0;
+}
+table.diff .text {
+	border-left: 1px solid #e0e0e0;
 }
 table.diff .add .number {
 	background-color: #baeeba;
