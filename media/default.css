@@ -63,7 +63,7 @@ table.diff {
 table.diff td {
     padding-left: .3em;
     padding-right: .3em;
-    white-space: nowrap;
+    white-space: pre;
 }
 table.diff .break {
     background-color: #babaee;
