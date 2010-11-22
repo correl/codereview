@@ -26,7 +26,7 @@
                     <span class="marker tag"><a href="{% url codereview.browser.views.log repository=repository %}?c={{ tag }}">{{ tag }}</a></span>
                 {% endif %}
             {% endfor %}
-            <a href="{% url codereview.browser.views.view repository=repository ref=commit.id %}">{{ commit.message|oneline }}</a>
+            <a href="{% url codereview.browser.views.commit repository=repository ref=commit.id %}">{{ commit.message|oneline }}</a>
         </td>
     </tr>
 {% endfor %}

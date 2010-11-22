@@ -11,7 +11,7 @@
 <h3>
     {{ blob.path|basename }}
     @
-    <a href="{% url codereview.browser.views.view repository=repository ref=commit.id %}">{{ commit.id }}</a>
+    <a href="{% url codereview.browser.views.commit repository=repository ref=commit.id %}">{{ commit.id }}</a>
 </h3>
 {% endwith %}
 {% if blob.data %}

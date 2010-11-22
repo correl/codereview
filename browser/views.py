@@ -43,7 +43,7 @@ def log(request, repository, path=None):
     data.update(_log_data(request, repo, ref, path))
     data.update(_nav_data(request, repo, ref, path))
     return render_to_response('browser/log.html', data)
-def view(request, repository, ref):
+def commit(request, repository, ref):
     try:
         repository = Repository.objects.get(name=repository)
     except:
