@@ -1,3 +1,4 @@
+import os
 import re
 import difflib
 from datetime import datetime
@@ -197,5 +198,18 @@ class Git(VCS):
             elif type(node) == git.objects.Tree:
                 dirs.append(node.path)
         return dirs, files
+    def blob(self, commit, path):
+        tree = self._repo.commit(commit).tree
+        dir = os.path.dirname(path)
+        if dir:
+            for i in tree.traverse():
+                if type(i) == git.objects.Tree and i.path == dir:
+                    tree = i
+        if dir != tree.path:
+            raise Exception('Path not found')
+        for node in tree:
+            if type(node) == git.objects.Blob and node.path == path:
+                return Blob(node.path, node.data_stream.read())
+        raise Exception('Blob Path not found')
 if __name__ == '__main__':
     g = Git('/home/correlr/code/voiceaxis')

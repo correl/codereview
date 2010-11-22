@@ -12,6 +12,11 @@ def oneline(value):
 
 @register.filter
 @stringfilter
+def lines(value):
+    return value.split('\n')
+
+@register.filter
+@stringfilter
 def dirname(value):
     return os.path.dirname(value)
 

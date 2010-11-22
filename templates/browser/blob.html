@@ -1,0 +1,19 @@
+{% extends "layouts/default.html" %}
+{% load vcs %}
+
+{% block navigation %}
+{% include "browser/navigation.html" %}
+{% endblock %}
+
+{% block content %}
+<h2>Blob View</h2>
+<table class="diff">
+    {% for line in blob.data|lines %}
+        <tr>
+            <td class="number">{{ forloop.counter }}</td>
+            <td class="text">{{ line }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% include "browser/commitlog.html" %}
+{% endblock %}
