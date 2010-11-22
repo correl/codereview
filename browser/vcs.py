@@ -117,7 +117,7 @@ class Git(VCS):
         if 'master' in self.branches():
             self._ref = 'master'
         else:
-            self.ref = self.branches()[0]
+            self._ref = self.branches()[0]
     def branches(self):
         if not self._branches:
             self._branches = dict([(head.name, self.commit(head.commit)) for head in self._repo.heads])
