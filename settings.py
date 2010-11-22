@@ -55,7 +55,7 @@ MEDIA_URL = ''
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+ADMIN_MEDIA_PREFIX = 'http://phoenixinquis.is-a-geek.org/admin_media/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'w*cepy#)iiaion7n!^_zwyc3cy_s89!qz!ey5%avrgg($8o_*y'
@@ -91,7 +91,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
 
     'codereview.dashboard',
     'codereview.browser',
