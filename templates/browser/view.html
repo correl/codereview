@@ -40,6 +40,7 @@
                         =>
                         {% if diff.b %}{{ diff.b.path }}{% else %}(Deleted){% endif %}
                     {% endif %}
+                </caption>
                 {% for change in diff.changes %}
                     {% if change.type == '@' %}
                         <tr class="break">
