@@ -33,28 +33,7 @@
 <div class="diff-container">
     <div class="diff-html">
         {% for diff in diffs %}
-            <table class="diff">
-                <caption>
-                    {% if diff.a %}{{ diff.a.path }}{% else %}(New File){% endif %}
-                    {% if diff.a.path != diff.b.path %}
-                        =>
-                        {% if diff.b %}{{ diff.b.path }}{% else %}(Deleted){% endif %}
-                    {% endif %}
-                </caption>
-                {% for change in diff.changes %}
-                    {% if change.type == '@' %}
-                        <tr class="break">
-                            <td colspan="3">{{ change.text }}</td>
-                        </tr>
-                    {% else %}
-                        <tr class="{% if change.type == '+' %}add{% endif %}{% if change.type == '-' %}del{% endif %}">
-                            <td class="number">{% if change.type != '+' %}{{ change.line_a }}{% endif %}</td>
-                            <td class="number">{% if change.type != '-' %}{{ change.line_b }}{% endif %}</td>
-                            <td class="text">{{ change.text }}</td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            </table>
+            {% include "components/diff.html" %}
         {% endfor %}
     </div>
 </div>
