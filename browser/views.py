@@ -1,6 +1,8 @@
 import os
 from django.http import Http404
 from django.shortcuts import render_to_response
+from django.template import RequestContext
+from django.contrib.auth.decorators import permission_required
 from codereview.dashboard.models import Repository
 from codereview.browser import vcs
 
@@ -37,12 +39,16 @@ def _log_data(request, repo, ref, path=None):
             'newer': newer,
             'older': older,
             }
+@permission_required('dashboard.browse')
 def log(request, repository, path=None):
     repo, ref = _repo(request, repository)
-    data = {'repository': repository}
+    data = RequestContext(request, {
+        'repository': repository
+    })
     data.update(_log_data(request, repo, ref, path))
     data.update(_nav_data(request, repo, ref, path))
     return render_to_response('browser/log.html', data)
+@permission_required('dashboard.browse')
 def commit(request, repository, ref):
     try:
         repository = Repository.objects.get(name=repository)
@@ -52,20 +58,21 @@ def commit(request, repository, ref):
     commit = repo.commit(ref)
     diffs = repo.diff(ref)
 
-    return render_to_response('browser/view.html',
-            {
-                'repository': repository,
-                'repo': repo,
-                'ref': ref,
-                'commit': commit,
-                'diffs': diffs,
-            })
+    data = RequestContext(request, {
+        'repository': repository,
+        'repo': repo,
+        'ref': ref,
+        'commit': commit,
+        'diffs': diffs,
+    })
+    return render_to_response('browser/view.html', data)
+@permission_required('dashboard.browse')
 def blob(request, repository, path):
     repo, ref = _repo(request, repository)
-    data = {
+    data = RequestContext(request, {
         'repository': repository,
         'blob': repo.blob(ref, path),
-        }
+    })
     data.update(_log_data(request, repo, ref, path))
     data.update(_nav_data(request, repo, ref, os.path.dirname(path)))
     return render_to_response('browser/blob.html', data)

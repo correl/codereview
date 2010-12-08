@@ -1,0 +1,5 @@
+{% extends "layouts/default.html" %}
+{% block content %}
+    <p>You have been logged out.</p>
+    <a href="{% url django.contrib.auth.views.login %}">Log back in</a>
+{% endblock %}
