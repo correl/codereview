@@ -76,6 +76,13 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'codereview.urls'
+LOGIN_URL = '/dashboard/login/'
+LOGIN_REDIRECT_URL = '/'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'codereview.dashboard.auth.PAMBackend',
+)
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".

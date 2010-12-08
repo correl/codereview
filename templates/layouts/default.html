@@ -11,7 +11,13 @@
     <body>
         <div id="container">
             <div class="header">
-                <h1><a href="{% url codereview.dashboard.views.index %}">CodeReview</a></title>
+                <h1><a href="{% url codereview.dashboard.views.index %}">CodeReview</a></title></h1>
+                {% if user and user.is_authenticated %}
+                    Currently logged in as
+                    {{ user }}
+
+                    <a href="{% url django.contrib.auth.views.logout %}">Log Out</a>
+                {% endif %}
             </div>
             <div class="navigation">
                 {% block navigation %}

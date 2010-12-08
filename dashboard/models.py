@@ -5,5 +5,10 @@ class Repository(models.Model):
     path = models.CharField(max_length=255)
     type = models.IntegerField(default=0)
 
+    class Meta:
+        permissions = (
+            ("browse", "Browse repositories"),
+        )
+
     def __unicode__(self):
         return self.name

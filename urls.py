@@ -10,6 +10,8 @@ urlpatterns = patterns('',
     (r'^$', 'codereview.dashboard.views.index'),
     (r'^browser/', include('codereview.browser.urls')),
 
+    (r'^dashboard/', include('codereview.dashboard.urls')),
+
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
