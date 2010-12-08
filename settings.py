@@ -77,6 +77,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'codereview.urls'
 LOGIN_URL = '/dashboard/login/'
+LOGIN_REDIRECT_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
