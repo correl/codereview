@@ -19,7 +19,7 @@ def new(request):
         commit = repo.commit(form.cleaned_data['ref'])
         description = commit.message.split('\n')[0].strip()
         review = Review.objects.create(author=request.user,
-                description=commit.message)
+                description=description)
         item = Item.objects.create(
                 review=review,
                 repo=repository,
