@@ -93,3 +93,6 @@ table.diff .del .text {
 table.diff td {
     font-family: monospace;
 }
+table.diff tr.annotation td {
+    white-space: normal;
+}

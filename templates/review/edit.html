@@ -1,0 +1,13 @@
+{% extends "layouts/default.html" %}
+
+{% block annotations %}
+{% endblock %}
+
+{% block content %}
+<h2>#{{ review.pk }} - <span id="review-description">{{ review.description }}</span></h2>
+
+{% for diff in diffs %}
+    {% include "components/diff.html" %}
+{% endfor %}
+{% endblock %}
+

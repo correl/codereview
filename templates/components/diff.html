@@ -17,8 +17,18 @@
                 <td class="number">{% if change.type != '-' %}{{ change.line_b }}{% endif %}</td>
                 <td class="text">{{ change.text }}</td>
             </tr>
-            {% block annotations %}
-            {% endblock %}
+
+            {# TODO: Load in annotations somehow #}
+            {% if change.annotation %}
+            <tr class="annotation">
+                <td colspan="3">
+                    <div class="annotation">
+                        <strong>Author @ Date:</strong>
+                        <p>Comment</p>
+                    </div>
+                </td>
+            </tr>
+            {% endif %}
         {% endif %}
     {% endfor %}
 </table>
