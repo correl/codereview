@@ -90,6 +90,13 @@ table.diff .del .text {
 	border-left: 1px solid red;
 	background-color: #ffe0e0;
 }
+table.diff tr:hover .number,
+table.diff tr:hover .text {
+    background-color: #ffcc99;
+}
+table.diff tr:hover .text {
+    border-left: 1px solid orange;
+}
 table.diff td {
     font-family: monospace;
 }
