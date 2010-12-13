@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import permission_required
 from codereview.browser import vcs
 from codereview.dashboard.models import Repository
-from codereview.review.models import Review, Item, Comment
+from codereview.review.models import Review, Comment
 from codereview.review.forms import NewCommitReviewForm
 
 @permission_required('review.add_review')
@@ -18,12 +18,12 @@ def new(request):
         repo = vcs.create(repository.type, repository.path)
         commit = repo.commit(form.cleaned_data['ref'])
         description = commit.message.split('\n')[0].strip()
-        review = Review.objects.create(author=request.user,
-                description=description)
-        item = Item.objects.create(
-                review=review,
+        review = Review.objects.create(
+                author=request.user,
                 repo=repository,
-                ref=commit.id)
+                ref=commit.id,
+                parent=commit.parents[0] if commit.parents else None,
+                description=description)
         return HttpResponseRedirect(reverse(edit, args=[review.pk]))
 @permission_required('review.change_review')
 def edit(request, review_id):
@@ -31,14 +31,10 @@ def edit(request, review_id):
         review = Review.objects.get(pk=review_id)
     except:
         raise Http404
-    # TODO: Support multiple items per review (?)
-    item = review.item_set.get()
-    repo = vcs.create(item.repo.type, item.repo.path)
-    commit = repo.commit(item.ref)
-    diffs = repo.diff(commit.id)
+    repo = vcs.create(review.repo.type, review.repo.path)
+    diffs = repo.diff(review.ref, review.parent if review.parent else None)
     data = RequestContext(request, {
         "review": review,
-        "commit": commit,
         "diffs": diffs,
     })
     return render_to_response('review/edit.html', data)

@@ -19,15 +19,19 @@
             </tr>
 
             {# TODO: Load in annotations somehow #}
-            {% if change.annotation %}
+            {% if review %}
+            {% for comment in review.comment_set.all %}
+            {% if change.type != '+' and change.line_a == comment.line_a or change_type != '-' and change.line_b == comment.line_b %}
             <tr class="annotation">
                 <td colspan="3">
                     <div class="annotation">
-                        <strong>Author @ Date:</strong>
-                        <p>Comment</p>
+                        <strong>{{ comment.author }} @ {{ comment.created }}:</strong>
+                        <p>{{ comment.text }}</p>
                     </div>
                 </td>
             </tr>
+            {% endif %}
+            {% endfor %}
             {% endif %}
         {% endif %}
     {% endfor %}
