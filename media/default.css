@@ -103,3 +103,9 @@ table.diff td {
 table.diff tr.annotation td {
     white-space: normal;
 }
+
+.comment-form textarea {
+    display: block;
+    width: 90%;
+    height: 3em;
+}

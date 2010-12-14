@@ -12,7 +12,8 @@
                 <td colspan="3">{{ change.text }}</td>
             </tr>
         {% else %}
-            <tr class="{% if change.type == '+' %}add{% endif %}{% if change.type == '-' %}del{% endif %}">
+            <tr id="{{ review.pk }}_{{ forloop.parentloop.counter0 }}_{% if change.type != '+' %}{{ change.line_a }}{% else %}0{% endif %}_{% if change.type != '-' %}{{ change.line_b }}{% else %}0{% endif %}"
+                class="{% if change.type == '+' %}add{% endif %}{% if change.type == '-' %}del{% endif %}">
                 <td class="number">{% if change.type != '+' %}{{ change.line_a }}{% endif %}</td>
                 <td class="number">{% if change.type != '-' %}{{ change.line_b }}{% endif %}</td>
                 <td class="text">{{ change.text }}</td>

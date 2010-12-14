@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import permission_required
 from codereview.browser import vcs
 from codereview.dashboard.models import Repository
 from codereview.review.models import Review, Comment
-from codereview.review.forms import NewCommitReviewForm
+from codereview.review.forms import NewCommitReviewForm, CommentForm
 
 @permission_required('review.add_review')
 def new(request):
@@ -38,3 +38,21 @@ def edit(request, review_id):
         "diffs": diffs,
     })
     return render_to_response('review/edit.html', data)
+@permission_required('review.add_comment')
+def add_comment(request):
+    review_id = request.POST.get('review')
+    try:
+        review = Review.objects.get(pk=review_id)
+        path = int(request.POST.get('path'))
+    except:
+        raise Http404
+    repo = vcs.create(review.repo.type, review.repo.path)
+    diffs = repo.diff(review.ref, review.parent if review.parent else None)
+
+    form = CommentForm(request.POST)
+    comment = form.save(commit=False)
+    diff = diffs[path]
+    comment.author = request.user
+    comment.path = diff.b.path if diff.b else diff.a.path
+    comment.save()
+    return HttpResponseRedirect(reverse(edit, args=[review.pk]))

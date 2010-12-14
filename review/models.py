@@ -40,6 +40,6 @@ class Comment(models.Model):
     author = models.ForeignKey(User)
     created = models.DateTimeField(auto_now_add=True)
     path = models.TextField()
-    line_a = models.IntegerField()
+    line_a = models.IntegerField(null=True)
     line_b = models.IntegerField(null=True)
     text = models.TextField()
