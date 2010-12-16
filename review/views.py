@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
@@ -55,4 +55,7 @@ def add_comment(request):
     comment.author = request.user
     comment.path = diff.b.path if diff.b else diff.a.path
     comment.save()
-    return HttpResponseRedirect(reverse(edit, args=[review.pk]))
+    data = RequestContext(request, {
+        'comment': comment,
+    })
+    return render_to_response('components/comment.html', data)
