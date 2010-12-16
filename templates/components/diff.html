@@ -25,10 +25,7 @@
             {% if change.type != '+' and change.line_a == comment.line_a or change_type != '-' and change.line_b == comment.line_b %}
             <tr class="annotation">
                 <td colspan="3">
-                    <div class="annotation">
-                        <strong>{{ comment.author }} @ {{ comment.created }}:</strong>
-                        <p>{{ comment.text }}</p>
-                    </div>
+                    {% include "components/comment.html" %}
                 </td>
             </tr>
             {% endif %}

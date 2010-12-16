@@ -2,13 +2,16 @@
 
 {% block content %}
 
-{% if form.errors %}
-    <p>Username or password is incorrect</p>
-{% endif %}
 
-<form method="post" action="{% url django.contrib.auth.views.login %}">
-    {% csrf_token %}
-    <fieldset>
+<form method="post" action="{% url django.contrib.auth.views.login %}" class="ui-widget">
+    <div class="ui-widget-header">
+        Log In
+    </div>
+    <fieldset class="ui-widget-content">
+        {% if form.errors %}
+            <p class="ui-state-error">Username or password is incorrect</p>
+        {% endif %}
+        {% csrf_token %}
         <dl>
             <dt>{{ form.username.label_tag }}</dt>
             <dd>{{ form.username }}</dd>

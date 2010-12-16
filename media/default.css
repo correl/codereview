@@ -109,3 +109,9 @@ table.diff tr.annotation td {
     width: 90%;
     height: 3em;
 }
+.comment .header {
+    font-weight: bold;
+}
+.comment .text {
+    padding-left: 1em;
+}
