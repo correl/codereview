@@ -13,7 +13,7 @@
                 var path = info[1];
                 var line_a = info[2];
                 var line_b = info[3];
-                if ($('#' + form_id).length == 0) {
+                if ($('#' + form_id).length == 0 && !$(this).next().hasClass('annotation')) {
                     // Show the comment form
                     var form = $(
                         '<form method="post" action="{% url codereview.review.views.add_comment %}">' +
