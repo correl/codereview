@@ -30,6 +30,11 @@
     </dd>
 </dl>
 
+<form name="review" method="post" action="{% url codereview.review.views.new%}">
+    {{ form }}
+    {% csrf_token %}
+    <input type="submit" value="Create New Review" />
+</form>
 <div class="diff-container">
     <div class="diff-html">
         {% for diff in diffs %}

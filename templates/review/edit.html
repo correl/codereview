@@ -1,0 +1,63 @@
+{% extends "layouts/default.html" %}
+
+{% block annotations %}
+{% endblock %}
+
+{% block content %}
+<script type="text/javascript">
+    $(document).ready(function() {
+            $('.diff tr:has(.number)').click(function(e) {
+                // Do stuff
+                var form_id = this.id + '_form';
+                var info = this.id.split('_');
+                var path = info[1];
+                var line_a = info[2];
+                var line_b = info[3];
+                if ($('#' + form_id).length == 0 && !$(this).next().hasClass('annotation')) {
+                    // Show the comment form
+                    var form = $(
+                        '<form method="post" action="{% url codereview.review.views.add_comment %}">' +
+                        "{% csrf_token %}" +
+                        '<input type="hidden" name="review" value="{{ review.pk }}" />' +
+                        '<input type="hidden" name="path" value="' + path + '" />' +
+                        '<input type="hidden" name="line_a" value="' + line_a + '" />' +
+                        '<input type="hidden" name="line_b" value="' + line_b + '" />' +
+                        '<textarea name="text" />' +
+                        '<input type="submit" value="Add Comment" />' +
+                        '<input type="button" value="Cancel" onclick="$(this.form).parent().parent().remove();"/>' +
+                        '</form>');
+                    form.submit(function() {
+                        var data = $(this).serialize();
+                        //$.post('{% url codereview.review.views.add_comment %}', data, function(comment) {
+                        $.ajax({
+                            'url': '{% url codereview.review.views.add_comment %}',
+                            'type': 'POST',
+                            'data': data,
+                            'context': $(this),
+                            'success': function(html) {
+                                html = $('<tr class="annotation"></tr>').append($('<td colspan="3"></td>').append(html));
+                                $(this).parent().parent().after(html);
+                                $(this).parent().parent().remove();
+                            },
+                        });
+                        return false;
+                    });
+                    $(this).after(
+                        $('<tr class="comment-form" id="' + form_id + '" ></tr>')
+                        .append($('<td colspan="3"></td>').append(form))
+                    );
+                }
+            })
+    });
+</script>
+<h2>#{{ review.pk }} - <span id="review-description">{{ review.description }}</span></h2>
+
+{% for diff in diffs %}
+    {% include "components/diff.html" %}
+{% endfor %}
+
+<div id="comment-template" class="ui-helper-hidden-accessible">
+    {% include "components/comment.html" %}
+</div>
+{% endblock %}
+

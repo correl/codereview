@@ -90,6 +90,28 @@ table.diff .del .text {
 	border-left: 1px solid red;
 	background-color: #ffe0e0;
 }
+table.diff tr:hover .number,
+table.diff tr:hover .text {
+    background-color: #ffcc99;
+}
+table.diff tr:hover .text {
+    border-left: 1px solid orange;
+}
 table.diff td {
     font-family: monospace;
+}
+table.diff tr.annotation td {
+    white-space: normal;
+}
+
+.comment-form textarea {
+    display: block;
+    width: 90%;
+    height: 3em;
+}
+.comment .header {
+    font-weight: bold;
+}
+.comment .text {
+    padding-left: 1em;
 }

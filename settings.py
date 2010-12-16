@@ -102,4 +102,5 @@ INSTALLED_APPS = (
 
     'codereview.dashboard',
     'codereview.browser',
+    'codereview.review',
 )

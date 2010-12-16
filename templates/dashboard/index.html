@@ -9,3 +9,26 @@
     {% endfor %}
 </ul>
 {% endblock %}
+
+{% block content %}
+<div class="section">
+    <h2>Reviews</h2>
+    <table class="reviews">
+        <tr>
+            <th>Review</th>
+            <th>Created</th>
+            <th>Comments</th>
+        </tr>
+        {% for review in reviews %}
+            <tr>
+                <td>
+                    #{{ review.pk }} -
+                    <a href="{% url codereview.review.views.edit review_id=review.pk %}">{{ review.description }}</a>
+                </td>
+                <td>{{ review.created }}</td>
+                <td>{{ review.comment_set.count }}</td>
+            </tr>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
