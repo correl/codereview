@@ -21,12 +21,14 @@
 
             {% if review %}
                 {% for comment in review.comment_set.all %}
-                    {% if change.type == '+' and change.line_b == comment.line_b or change.type == '-' and change.line_a == comment.line_a or change.line_a == comment.line_a and change.line_b == comment.line_b %}
-                    <tr class="annotation">
-                        <td colspan="3">
-                            {% include "components/comment.html" %}
-                        </td>
-                    </tr>
+                    {% if not diff.b and comment.path == diff.a.path or comment.path == diff.b.path %}
+                        {% if change.type == '+' and change.line_b == comment.line_b or change.type == '-' and change.line_a == comment.line_a or change.line_a == comment.line_a and change.line_b == comment.line_b %}
+                        <tr class="annotation">
+                            <td colspan="3">
+                                {% include "components/comment.html" %}
+                            </td>
+                        </tr>
+                        {% endif %}
                     {% endif %}
                 {% endfor %}
             {% endif %}
