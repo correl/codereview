@@ -19,17 +19,16 @@
                 <td class="text">{{ change.text }}</td>
             </tr>
 
-            {# TODO: Load in annotations somehow #}
             {% if review %}
-            {% for comment in review.comment_set.all %}
-            {% if change.type != '+' and change.line_a == comment.line_a or change_type != '-' and change.line_b == comment.line_b %}
-            <tr class="annotation">
-                <td colspan="3">
-                    {% include "components/comment.html" %}
-                </td>
-            </tr>
-            {% endif %}
-            {% endfor %}
+                {% for comment in review.comment_set.all %}
+                    {% if change.type == '+' and change.line_b == comment.line_b or change.type == '-' and change.line_a == comment.line_a or change.line_a == comment.line_a and change.line_b == comment.line_b %}
+                    <tr class="annotation">
+                        <td colspan="3">
+                            {% include "components/comment.html" %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
             {% endif %}
         {% endif %}
     {% endfor %}
