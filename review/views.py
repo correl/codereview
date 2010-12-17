@@ -6,23 +6,30 @@ from django.contrib.auth.decorators import permission_required
 from codereview.browser import vcs
 from codereview.dashboard.models import Repository
 from codereview.review.models import Review, Comment
-from codereview.review.forms import NewCommitReviewForm, CommentForm
+from codereview.review.forms import NewReviewForm, CommentForm
 
 @permission_required('review.add_review')
 def new(request):
     if not request.POST:
         raise Http404
-    form = NewCommitReviewForm(request.POST)
+    form = NewReviewForm(request.POST)
     if form.is_valid():
         repository = Repository.objects.get(pk=form.cleaned_data['repo'])
         repo = vcs.create(repository.type, repository.path)
         commit = repo.commit(form.cleaned_data['ref'])
-        description = commit.message.split('\n')[0].strip()
+        if form.cleaned_data['description']:
+            description = form.cleaned_data['description']
+        else:
+            description = commit.message.split('\n')[0].strip()
+        if form.cleaned_data['parent']:
+            parent = form.cleaned_data['parent']
+        else:
+            parent = commit.parents[0] if commit.parents else None
         review = Review.objects.create(
                 author=request.user,
                 repo=repository,
                 ref=commit.id,
-                parent=commit.parents[0] if commit.parents else None,
+                parent=parent,
                 description=description)
         return HttpResponseRedirect(reverse(edit, args=[review.pk]))
 @permission_required('review.change_review')

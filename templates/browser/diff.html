@@ -9,14 +9,11 @@
 {% block content %}
 <h2>Diff View</h2>
 <strong>{{ a.id }} => {{ b.id }}</strong>
-{% comment %}
-** ADD THIS WHEN REVIEWS SUPPORT MANUAL A/B DIFFS **
 <form name="review" method="post" action="{% url codereview.review.views.new%}">
     {{ form }}
     {% csrf_token %}
     <input type="submit" value="Create New Review" />
 </form>
-{% endcomment %}
 <div class="diff-container">
     <div class="diff-html">
         {% for diff in diffs %}

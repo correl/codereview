@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import permission_required
 from codereview.dashboard.models import Repository
-from codereview.review.forms import NewCommitReviewForm
+from codereview.review.forms import NewReviewForm
 from codereview.browser import vcs
 
 def _repo(request, name):
@@ -58,7 +58,7 @@ def commit(request, repository, ref):
     repo = vcs.create(repository.type, repository.path)
     commit = repo.commit(ref)
     diffs = repo.diff(ref)
-    form = NewCommitReviewForm({
+    form = NewReviewForm({
         'author': request.user.pk,
         'repo': repository.pk,
         'ref': ref
@@ -77,28 +77,36 @@ def commit(request, repository, ref):
 def diff(request, repository):
     if not request.GET:
         raise Http404
-    if not request.GET['a']:
+    if not request.GET['b']:
         raise Http404
     try:
         repository = Repository.objects.get(name=repository)
         repo = vcs.create(repository.type, repository.path)
-        a = request.GET['a']
-        commit_a = repo.commit(a)
-        b = None
-        if request.GET['b']:
-            b = request.GET['b']
-        elif commit_a.parents:
-            b = commit_a.parents[0]
+        b = request.GET['b']
         commit_b = repo.commit(b)
+        a = None
+        if request.GET['a']:
+            a = request.GET['a']
+        elif commit_a.parents:
+            a = commit_b.parents[0]
+        commit_a = repo.commit(a) if a else None
         diffs = repo.diff(b, a)
     except:
         raise Http404
+    form = NewReviewForm({
+        'author': request.user.pk,
+        'repo': repository.pk,
+        'ref': b,
+        'parent': a,
+        'description': 'Diff from {0} => {1}'.format(a, b),
+    })
     data = RequestContext(request, {
         'repository': repository,
         'repo': repo,
         'a': commit_a,
         'b': commit_b,
         'diffs': diffs,
+        'form': form,
     })
     return render_to_response('browser/diff.html', data)
 @permission_required('dashboard.browse')
