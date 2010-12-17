@@ -10,4 +10,7 @@ urlpatterns = patterns('',
     # Commit view
     (r'^(?P<repository>.*?)/commit/(?P<ref>.*?)/$',
         'codereview.browser.views.commit'),
+    # Diff view
+    (r'^(?P<repository>.*?)/diff/$',
+        'codereview.browser.views.diff'),
 )

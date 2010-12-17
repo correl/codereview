@@ -5,5 +5,11 @@
 {% endblock %}
 
 {% block content %}
+<form action="{% url codereview.browser.views.diff repository=repository %}">
+    <label>Diff tree from revision:</label>
+    <input type="text" name="a" />
+    <input type="hidden" name="b" value="{{ ref }}" />
+    <input type="submit" value="Diff" />
+</form>
 {% include "browser/commitlog.html" %}
 {% endblock %}

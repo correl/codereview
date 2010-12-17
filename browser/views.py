@@ -74,6 +74,34 @@ def commit(request, repository, ref):
     })
     return render_to_response('browser/view.html', data)
 @permission_required('dashboard.browse')
+def diff(request, repository):
+    if not request.GET:
+        raise Http404
+    if not request.GET['a']:
+        raise Http404
+    try:
+        repository = Repository.objects.get(name=repository)
+        repo = vcs.create(repository.type, repository.path)
+        a = request.GET['a']
+        commit_a = repo.commit(a)
+        b = None
+        if request.GET['b']:
+            b = request.GET['b']
+        elif commit_a.parents:
+            b = commit_a.parents[0]
+        commit_b = repo.commit(b)
+        diffs = repo.diff(b, a)
+    except:
+        raise Http404
+    data = RequestContext(request, {
+        'repository': repository,
+        'repo': repo,
+        'a': commit_a,
+        'b': commit_b,
+        'diffs': diffs,
+    })
+    return render_to_response('browser/diff.html', data)
+@permission_required('dashboard.browse')
 def blob(request, repository, path):
     repo, ref = _repo(request, repository)
     data = RequestContext(request, {
