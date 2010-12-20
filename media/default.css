@@ -55,9 +55,13 @@ div.vcs-nav {
     text-align: center;
 }
 
+.diff-container {
+    width: 100%;
+    overflow: auto;
+    border: 1px solid black;
+}
 table.diff {
     width: 100%;
-    border: 1px solid black;
     border-collapse: collapse;
 }
 table.diff td {

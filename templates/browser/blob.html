@@ -15,14 +15,16 @@
 </h3>
 {% endwith %}
 {% if blob.data %}
-    <table class="diff">
-        {% for line in blob.data|lines %}
-            <tr>
-                <td class="number">{{ forloop.counter }}</td>
-                <td class="text">{{ line }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+    <div class="diff-container">
+        <table class="diff">
+            {% for line in blob.data|lines %}
+                <tr>
+                    <td class="number">{{ forloop.counter }}</td>
+                    <td class="text">{{ line }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% else %}
     <em>File is empty</em>
 {% endif %}

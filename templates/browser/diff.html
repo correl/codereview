@@ -14,11 +14,9 @@
     {% csrf_token %}
     <input type="submit" value="Create New Review" />
 </form>
-<div class="diff-container">
-    <div class="diff-html">
-        {% for diff in diffs %}
-            {% include "components/diff.html" %}
-        {% endfor %}
-    </div>
+<div class="diffs">
+    {% for diff in diffs %}
+        {% include "components/diff.html" %}
+    {% endfor %}
 </div>
 {% endblock %}
