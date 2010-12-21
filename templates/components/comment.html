@@ -1,8 +1,21 @@
-<div class="comment ui-widget">
+<div id="comment-{{ comment.pk }}" class="comment ui-widget">
     <div class="header ui-widget-header">
         {{ comment.author }} @ {{ comment.created }}
     </div>
     <div class="text ui-widget-content">
         {{ comment.text|linebreaks }}
     </div>
+</div>
+{% for response in comment.response_set.all %}
+    <div class="comment response ui-widget">
+        <div class="header ui-widget-header">
+            {{ response.author }} @ {{ response.created }}
+        </div>
+        <div class="text ui-widget-content">
+            {{ response.text|linebreaks }}
+        </div>
+    </div>
+{% endfor %}
+<div class="comment-buttons">
+    <a href="#comment-{{ comment.pk }}" rel="respond">Reply</a>
 </div>

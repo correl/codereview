@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import permission_required
 from codereview.browser import vcs
 from codereview.dashboard.models import Repository
 from codereview.review.models import Review, Comment
-from codereview.review.forms import NewReviewForm, CommentForm
+from codereview.review.forms import NewReviewForm, CommentForm, ResponseForm
 
 @permission_required('review.add_review')
 def new(request):
@@ -64,5 +64,20 @@ def add_comment(request):
     comment.save()
     data = RequestContext(request, {
         'comment': comment,
+    })
+    return render_to_response('components/comment.html', data)
+@permission_required('review.add_response')
+def add_response(request):
+    comment_id = request.POST.get('comment')
+    try:
+        comment = Comment.objects.get(pk=comment_id)
+    except:
+        raise Http404
+    form = ResponseForm(request.POST)
+    response = form.save(commit=False)
+    response.author = request.user
+    response.save()
+    data = RequestContext(request, {
+        'comment': response.comment,
     })
     return render_to_response('components/comment.html', data)

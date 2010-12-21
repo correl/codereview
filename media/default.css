@@ -108,10 +108,16 @@ table.diff tr.annotation td {
     white-space: normal;
 }
 
+.comment-form, .comment.response {
+    margin-left: 2em;
+}
 .comment-form textarea {
     display: block;
     width: 90%;
     height: 3em;
+}
+.comment-buttons {
+    text-align: right;
 }
 .comment .header {
     font-weight: bold;

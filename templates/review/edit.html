@@ -38,6 +38,7 @@
                                 html = $('<tr class="annotation"></tr>').append($('<td colspan="3"></td>').append(html));
                                 $(this).parent().parent().after(html);
                                 $(this).parent().parent().remove();
+                                updateButtons();
                             },
                         });
                         return false;
@@ -46,9 +47,43 @@
                         $('<tr class="comment-form" id="' + form_id + '" ></tr>')
                         .append($('<td colspan="3"></td>').append(form))
                     );
+                    updateButtons();
                 }
-            })
+            });
+            updateButtons();
     });
+    function updateButtons() {
+        $('.comment-buttons a[rel="respond"]').click(function(e) {
+            var href = $(this).attr('href');
+            var comment_id = href.split('-')[1];
+            if (!$(this).parent().prev().hasClass('comment-form')) {
+                var form = $(
+                    '<form method="post" action="{% url codereview.review.views.add_response %}">' +
+                    "{% csrf_token %}" +
+                    '<input type="hidden" name="comment" value="' + comment_id + '" />' +
+                    '<textarea name="text" />' +
+                    '<input type="submit" value="Reply" />' +
+                    '<input type="button" value="Cancel" onclick="$(this.form).parent().remove();" />' +
+                    '</form>');
+                form.submit(function() {
+                    var data = $(this).serialize();
+                    $.ajax({
+                        'url': '{% url codereview.review.views.add_response %}',
+                        'type': 'POST',
+                        'data': data,
+                        'context': $(this),
+                        'success': function(html) {
+                            $(this).parent().parent().html(html);
+                            updateButtons();
+                        },
+                    });
+                    return false;
+                });
+                $(this).parent().before($('<div class="comment-form"></div>').append(form));
+                updateButtons();
+            }
+        });
+    }
 </script>
 <h2>#{{ review.pk }} - <span id="review-description">{{ review.description }}</span></h2>
 

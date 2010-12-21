@@ -43,3 +43,9 @@ class Comment(models.Model):
     line_a = models.IntegerField(null=True)
     line_b = models.IntegerField(null=True)
     text = models.TextField()
+
+class Response(models.Model):
+    comment = models.ForeignKey(Comment)
+    author = models.ForeignKey(User)
+    created = models.DateTimeField(auto_now_add=True)
+    text = models.TextField()

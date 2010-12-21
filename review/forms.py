@@ -11,3 +11,7 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('review', 'line_a', 'line_b', 'text')
+class ResponseForm(forms.ModelForm):
+    class Meta:
+        model = Response
+        fields = ('comment', 'text')
