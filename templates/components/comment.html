@@ -5,6 +5,9 @@
     <div class="text ui-widget-content">
         {{ comment.text|linebreaks }}
     </div>
+    <div class="comment-buttons">
+        <a class="button" href="#comment-{{ comment.pk }}" rel="respond">Reply</a>
+    </div>
 </div>
 {% for response in comment.response_set.all %}
     <div class="comment response ui-widget">
@@ -16,6 +19,3 @@
         </div>
     </div>
 {% endfor %}
-<div class="comment-buttons">
-    <a class="button" href="#comment-{{ comment.pk }}" rel="respond">Reply</a>
-</div>

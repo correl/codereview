@@ -47,7 +47,7 @@
                         $('<tr class="comment-form" id="' + form_id + '" ></tr>')
                         .append($('<td colspan="3"></td>').append(form))
                     );
-                    updateButtons();
+                    styleButtons();
                 }
             });
             updateButtons();
@@ -79,8 +79,8 @@
                     });
                     return false;
                 });
-                $(this).parent().before($('<div class="comment-form"></div>').append(form));
-                updateButtons();
+                $(this).parents('.comment').parent().append($('<div class="comment-form"></div>').append(form));
+                styleButtons();
             }
         });
         styleButtons();
