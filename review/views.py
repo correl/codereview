@@ -22,7 +22,9 @@ def new(request):
         else:
             description = commit.message.split('\n')[0].strip()
         if form.cleaned_data['parent']:
-            parent = form.cleaned_data['parent']
+            # Ensure we store the actual commit id for the supplied parent ref
+            parent = repo.commit(form.cleaned_data['parent'])
+            parent = parent.id
         else:
             parent = commit.parents[0] if commit.parents else None
         review = Review.objects.create(
