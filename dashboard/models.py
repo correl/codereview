@@ -1,3 +1,4 @@
+from collections import deque
 from django.db import models
 from codereview.browser import vcs
 
@@ -15,6 +16,7 @@ class Repository(models.Model):
         repo = vcs.create(self.type, self.path)
         branches = repo.branches()
         for branch, commit in branches.iteritems():
+            print 'Updating', branch
             try:
                 head = Head.objects.get(repository=self, name=branch)
             except:
@@ -42,23 +44,37 @@ class Commit(models.Model):
     parents = models.ManyToManyField('self')
 
     def load(self, repo):
-        commit = repo.commit(self.ref)
-        self.message = commit.message
-        self.author = commit.author
-        self.author_email = commit.author_email
-        self.committer = commit.committer
-        self.committer_email = commit.committer_email
-        self.authored_date = commit.authored_date
-        self.committed_date = commit.committed_date
-        self.save()
-        for parent in commit.parents:
-            try:
-                p = Commit.objects.get(ref=parent, repository=self.repository)
-            except:
-                p = Commit(ref=parent, repository=self.repository)
-                p.load(repo)
-            self.parents.add(p)
-        self.save()
+        queue = deque([self])
+        while queue:
+            c = queue.popleft()
+            commit = repo.commit(c.ref)
+            c.message = commit.message
+            c.author = commit.author
+            c.author_email = commit.author_email
+            c.committer = commit.committer
+            c.committer_email = commit.committer_email
+            c.authored_date = commit.authored_date
+            c.committed_date = commit.committed_date
+            c.save()
+            print 'Loading', c.ref
+            for parent in commit.parents:
+                try:
+                    p = Commit.objects.get(ref=parent, repository=c.repository)
+                except:
+                    p = Commit(ref=parent, repository=c.repository)
+                    parent = repo.commit(parent)
+                    p.message = parent.message
+                    p.author = parent.author
+                    p.author_email = parent.author_email
+                    p.committer = parent.committer
+                    p.committer_email = parent.committer_email
+                    p.authored_date = parent.authored_date
+                    p.committed_date = parent.committed_date
+                    p.save()
+                    queue.append(p)
+                    print 'Queuing', p.ref
+                c.parents.add(p)
+            c.save()
     def __unicode__(self):
         return self.ref
 
