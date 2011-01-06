@@ -1,2 +1,32 @@
-<dt>Commit: <a href="{% url codereview.browser.views.commit repository=result.object.repository.name ref=result.object.ref %}">{{ result.object.ref }}</a></dt>
-<dd>{{ result.object.message }}</dt>
+{% extends 'search/includes/layout.html' %}
+{% load gravatar %}
+{% load vcs %}
+
+{% block url %}
+    {% url codereview.browser.views.commit repository=result.object.repository.name ref=result.object.ref %}
+{% endblock %}
+
+{% block type %}
+    Commit
+{% endblock %}
+
+{% block title %}
+    {{ result.object.ref }} -
+    {{ result.object.message|oneline|truncatewords:5 }}</a>
+{% endblock %}
+{% block preview %}
+    <dl>
+        <dt>Author</dt>
+        <dd>
+            <img src="{{ result.object.author_email|gravatar:16 }}" />
+            {{ result.object.author }}
+        </dd>
+        <dt>Committer</dt>
+        <dd>
+            <img src="{{ result.object.committer_email|gravatar:16 }}" />
+            {{ result.object.committer}}
+        </dd>
+    </dl>
+    <hr />
+    <div class="message">{{ result.object.message|linebreaks }}</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+<div class="searchresult">
+    <div class="header">
+        <span class="type">
+            {% block type %}
+                Unknown Object
+            {% endblock %}
+            :
+        </span>
+        <span class="title">
+            {% block title %}
+            {% endblock %}
+        </span>
+    </div>
+    <div class="preview">
+        {% block preview %}
+        {% endblock %}
+    </div>
+    <div class="footer">
+        <a href="{% block url %}{% endblock %}">View</a>
+    </div>
+</div>
