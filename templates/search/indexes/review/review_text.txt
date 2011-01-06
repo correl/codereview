@@ -1,0 +1,12 @@
+{{ object.author }}
+{{ object.description }}
+{{ object.ref }} {{ object.parent }}
+
+{% for comment in object.comment_set.all %}
+    {{ comment.author }}
+    {{ comment.text }}
+    {% for response in comment.response_set.all %}
+        {{ response.author }}
+        {{ response.text }}
+    {% endfor %}
+{% endfor %}

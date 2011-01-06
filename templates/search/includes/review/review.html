@@ -1,0 +1,28 @@
+{% extends 'search/includes/layout.html' %}
+
+{% block url %}
+    {% url codereview.review.views.edit review_id=result.object.id %}
+{% endblock %}
+
+{% block type %}
+    Review
+{% endblock %}
+
+{% block title %}
+    #{{ result.object.id }} -
+    {{ result.object.description|truncatewords:10 }}</a>
+{% endblock %}
+
+{% block preview %}
+    <dl>
+        <dt>Commit</dt>
+        <dd>{{ result.object.ref }}</dd>
+        <dt>Parent</dt>
+        <dd>{{ result.object.parent }}</dd>
+    </dl>
+    <hr />
+    <p>
+        {{ result.object.description|linebreaksbr }}
+    </p>
+    {{ result.object.comment_set.count }} Comment(s)
+{% endblock %}
