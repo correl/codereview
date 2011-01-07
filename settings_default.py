@@ -1,6 +1,8 @@
 # Django settings for codereview project.
+import os.path
+PWD = os.path.dirname(os.path.realpath(__file__ )) 
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -11,10 +13,10 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'codereview',            # Or path to database file if using sqlite3.
-        'USER': 'codereview',            # Not used with sqlite3.
-        'PASSWORD': 'codereview',        # Not used with sqlite3.
+        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': '',                      # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -55,10 +57,10 @@ MEDIA_URL = ''
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = 'http://phoenixinquis.is-a-geek.org/admin_media/'
+ADMIN_MEDIA_PREFIX = '/media/'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'w*cepy#)iiaion7n!^_zwyc3cy_s89!qz!ey5%avrgg($8o_*y'
+SECRET_KEY = '65=n+sbokmo4sj1@7_7^x0mv4h(#n8bc5f*g$3vw6bdqan%)he'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -81,7 +83,9 @@ LOGIN_REDIRECT_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'codereview.dashboard.auth.PAMBackend',
+
+    # Uncomment the next line to enable PAM authentication
+    #'codereview.dashboard.auth.PAMBackend',
 )
 
 HAYSTACK_SITECONF = 'codereview.search_sites'
@@ -91,7 +95,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    "/home/correlr/code/codereview/templates",
+    os.path.join(PWD, 'templates')
 )
 
 INSTALLED_APPS = (
