@@ -29,6 +29,11 @@
                     {{ user }}
 
                     <a href="{% url django.contrib.auth.views.logout %}">Log Out</a>
+                    <form class="searchbar" method="get" action="/search/">
+                        <label>Search</label>
+                        <input type="text" name="q" />
+                        <input type="submit" value="Go" />
+                    </form>
                 {% endif %}
             </div>
             <div class="navigation">
@@ -36,6 +41,7 @@
                 {% endblock %}
             </div>
             <div class="content">
+                </form>
                 {% block content %}
                     This space intentionally left blank.
                 {% endblock %}

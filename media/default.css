@@ -5,6 +5,9 @@ body, th, td {
 a {
     color: black;
 }
+.searchbar {
+    float: right;
+}
 div.navigation {
     width: 300px;
     float: left;
@@ -121,4 +124,23 @@ table.diff tr.annotation td {
 }
 .comment .text {
     padding-left: 1em;
+}
+
+.searchresult {
+    border: 1px solid black;
+    margin-bottom: 1em;
+    border-radius: .5em;
+    background-color: #ddd;
+}
+.searchresult .header,
+.searchresult .preview,
+.searchresult .footer {
+    padding: .5em;
+}
+.searchresult .header {
+    font-weight: bold;
+}
+.searchresult .preview {
+    padding: 1em;
+    background-color: #eee;
 }

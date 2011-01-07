@@ -84,6 +84,9 @@ AUTHENTICATION_BACKENDS = (
     'codereview.dashboard.auth.PAMBackend',
 )
 
+HAYSTACK_SITECONF = 'codereview.search_sites'
+HAYSTACK_SEARCH_ENGINE = 'simple'
+
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
@@ -99,6 +102,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
+
+    'haystack',
 
     'codereview.dashboard',
     'codereview.browser',
