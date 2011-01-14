@@ -29,7 +29,7 @@
                     {{ user }}
 
                     <a href="{% url django.contrib.auth.views.logout %}">Log Out</a>
-                    <form class="searchbar" method="get" action="/search/">
+                    <form class="searchbar" method="get" action="{% url dashboard.views.search %}">
                         <label>Search</label>
                         <input type="text" name="q" />
                         <input type="submit" value="Go" />
