@@ -42,6 +42,7 @@ class Commit(models.Model):
     authored_date = models.DateTimeField()
     committed_date = models.DateTimeField()
     parents = models.ManyToManyField('self')
+    diffs = models.ManyToManyField('Diff')
 
     def load(self, repo):
         queue = deque([self])
@@ -74,9 +75,47 @@ class Commit(models.Model):
                     queue.append(p)
                     print 'Queuing', p.ref
                 c.parents.add(p)
+            if not c.diffs.all():
+                print 'Diffing', c.ref
+                try:
+                    for diff in repo.diff(c.ref):
+                        d = Diff()
+                        d.load(diff)
+                        d.save()
+                        c.diffs.add(d)
+                except:
+                    pass
             c.save()
     def __unicode__(self):
         return self.ref
+
+class Diff(models.Model):
+    context = models.IntegerField(default=3)
+    path_a = models.TextField()
+    path_b = models.TextField()
+    
+    def load(self, diff):
+        self.context = diff.context
+        if diff.a:
+            self.path_a = diff.a.path
+        if diff.b:
+            self.path_b = diff.b.path
+        self.save()
+        for change in diff.changes():
+            c = Change()
+            c.diff = self
+            c.type = change['type']
+            c.text = change['text']
+            c.line_a = change['line_a']
+            c.line_b = change['line_b']
+            c.save()
+
+class Change(models.Model):
+    diff = models.ForeignKey(Diff)
+    type = models.CharField(max_length=1)
+    text = models.TextField()
+    line_a = models.IntegerField()
+    line_b = models.IntegerField()
 
 class Head(models.Model):
     repository = models.ForeignKey(Repository)
